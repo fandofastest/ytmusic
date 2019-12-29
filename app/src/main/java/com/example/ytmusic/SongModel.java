@@ -3,6 +3,8 @@ package com.example.ytmusic;
 public class SongModel {
     String songid,songtitle,songdura,songimage;
 
+
+
     public String getSongid() {
         return songid;
     }

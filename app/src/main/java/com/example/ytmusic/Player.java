@@ -2,6 +2,7 @@ package com.example.ytmusic;
 
 
 
+import android.annotation.SuppressLint;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
@@ -13,17 +14,25 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.appcompat.widget.Toolbar;
 
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import static com.example.ytmusic.MainActivity.listlagu;
+import static com.example.ytmusic.MainActivity.serverurl;
 
 
 public class Player extends AppCompatActivity {
@@ -31,10 +40,15 @@ public class Player extends AppCompatActivity {
     private View parent_view;
     private AppCompatSeekBar seek_song_progressbar;
     private FloatingActionButton bt_play;
-    private TextView tv_song_current_duration, tv_song_total_duration;
+    private TextView tv_song_current_duration, tv_song_total_duration,judul;
     private String title,id,imgurl,durasi;
+    private ImageView imageView;
     // Media Player
     private MediaPlayer mp;
+    private ProgressBar progressBar;
+    private ImageButton next,prev,rand,repeat;
+
+    private int position,currnetposition;
 
     // Handler to update UI timer, progress bar etc,.
     private Handler mHandler = new Handler();
@@ -45,17 +59,19 @@ public class Player extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-
         initComponent();
     }
 
 
 
     private void initComponent() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         parent_view = findViewById(R.id.parent_view);
         seek_song_progressbar = (AppCompatSeekBar) findViewById(R.id.seek_song_progressbar);
         bt_play = (FloatingActionButton) findViewById(R.id.bt_play);
-
+        next=findViewById(R.id.bt_next);
+        prev=findViewById(R.id.bt_prev);
 
         // set Progress bar values
         seek_song_progressbar.setProgress(0);
@@ -63,17 +79,38 @@ public class Player extends AppCompatActivity {
 
         tv_song_current_duration = (TextView) findViewById(R.id.tv_song_current_duration);
         tv_song_total_duration = (TextView) findViewById(R.id.tv_song_total_duration);
+        imageView=findViewById(R.id.imagefoto);
+        judul=findViewById(R.id.judul);
+        progressBar=findViewById(R.id.progressBar);
 
-        title = getIntent().getStringExtra("title");
-        id = getIntent().getStringExtra("id");
-        imgurl = getIntent().getStringExtra("foto");
-        durasi= getIntent().getStringExtra("duration");
+
+
+        position=getIntent().getIntExtra("position",0);
+
+        currnetposition=position;
+        SongModel songModel = listlagu.get(position);
+
+        title = songModel.getSongtitle();
+        id = songModel.getSongid();
+        imgurl = songModel.getSongimage();
+        durasi= songModel.getSongdura();
+
+
+        tv_song_total_duration.setText(durasi);
+        judul.setText("Please Wait Preparing Your Music");
+        Glide.with(getApplicationContext()).load(imgurl).error(R.drawable.ic_launcher_background).into(imageView);
 
 
 
 
         // Media Player
         mp = new MediaPlayer();
+
+
+
+
+
+
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -84,17 +121,51 @@ public class Player extends AppCompatActivity {
 
         try {
 
-            Uri myUri = Uri.parse("http://168.63.213.155/mp3/ytdl.php?id="+id);
+            Uri myUri = Uri.parse(serverurl+id);
 
 
             mp = new MediaPlayer();
             mp.setDataSource(this, myUri);
             mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mp.prepare(); //don't use prepareAsync for mp3 playback
-            mp.start();
+            mp.prepareAsync(); //don't use prepareAsync for mp3 playback
+
+
         } catch (Exception e) {
             Snackbar.make(parent_view, "Cannot load audio file", Snackbar.LENGTH_SHORT).show();
         }
+        mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onPrepared(MediaPlayer mplayer) {
+
+                progressBar.setVisibility(View.GONE);
+                bt_play.setVisibility(View.VISIBLE);
+
+                if (mp.isPlaying()) {
+                    mp.pause();
+                    // Changing button image to play button
+                    bt_play.setImageResource(R.drawable.ic_play_circle_outline_black_24dp);
+                } else {
+                    // Resume song
+                    mp.start();
+                    // Changing button image to pause button
+                    bt_play.setImageResource(R.drawable.ic_pause_circle_outline_black_24dp);
+                    // Updating progress bar
+                    mHandler.post(mUpdateTimeTask);
+                }
+
+            }
+        });
+
+        mp.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mediaPlayer, int i) {
+                judul.setText(title);
+
+            }
+        });
+
+
 
 
        final MusicUtils utils = new MusicUtils();
@@ -126,7 +197,99 @@ public class Player extends AppCompatActivity {
         });
         buttonPlayerAction();
         updateTimerAndSeekbar();
+
+
     }
+
+    @SuppressLint("RestrictedApi")
+    private void playsong(int position){
+
+
+
+        SongModel songModel = listlagu.get(position);
+
+        title = songModel.getSongtitle();
+        id = songModel.getSongid();
+        imgurl = songModel.getSongimage();
+        durasi= songModel.getSongdura();
+
+
+        mp.stop();
+        mp.reset();
+        mp.release();
+
+        judul.setText("Please Wait Preparing Your Music");
+        Glide.with(getApplicationContext()).load(imgurl).error(R.drawable.ic_launcher_background).into(imageView);
+
+
+        progressBar.setVisibility(View.VISIBLE);
+        bt_play.setVisibility(View.GONE);
+
+
+
+
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                // Changing button image to play button
+                bt_play.setImageResource(R.drawable.ic_play_circle_outline_black_24dp);
+            }
+        });
+
+        try {
+
+            Uri myUri = Uri.parse(serverurl+id);
+
+
+            mp = new MediaPlayer();
+            mp.setDataSource(this, myUri);
+            mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mp.prepareAsync(); //don't use prepareAsync for mp3 playback
+
+
+        } catch (Exception e) {
+            Snackbar.make(parent_view, "Cannot load audio file", Snackbar.LENGTH_SHORT).show();
+        }
+        mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onPrepared(MediaPlayer mplayer) {
+
+                progressBar.setVisibility(View.GONE);
+                bt_play.setVisibility(View.VISIBLE);
+
+                if (mp.isPlaying()) {
+                    mp.pause();
+                    // Changing button image to play button
+                    bt_play.setImageResource(R.drawable.ic_play_circle_outline_black_24dp);
+                } else {
+                    // Resume song
+                    mp.start();
+                    // Changing button image to pause button
+                    bt_play.setImageResource(R.drawable.ic_pause_circle_outline_black_24dp);
+                    next.setColorFilter(getResources().getColor(R.color.grey_90), PorterDuff.Mode.SRC_ATOP);
+                    prev.setColorFilter(getResources().getColor(R.color.grey_90), PorterDuff.Mode.SRC_ATOP);
+                    // Updating progress bar
+                    mHandler.post(mUpdateTimeTask);
+                }
+
+            }
+        });
+
+        mp.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mediaPlayer, int i) {
+                judul.setText(title);
+
+            }
+        });
+
+
+
+
+    }
+
+
 
     /**
      * Play button click event plays a song and changes button to pause image
@@ -169,12 +332,24 @@ public class Player extends AppCompatActivity {
             }
             case R.id.bt_prev: {
                 toggleButtonColor((ImageButton) v);
-                Snackbar.make(parent_view, "Previous", Snackbar.LENGTH_SHORT).show();
+                currnetposition=currnetposition-1;
+
+//                Toast.makeText(getApplicationContext(),String.valueOf(currnetposition),Toast.LENGTH_LONG).show();
+
+                playsong(currnetposition);
+
                 break;
             }
             case R.id.bt_next: {
                 toggleButtonColor((ImageButton) v);
-                Snackbar.make(parent_view, "Next", Snackbar.LENGTH_SHORT).show();
+                currnetposition=currnetposition+1;
+
+//               Toast.makeText(getApplicationContext(),String.valueOf(currnetposition),Toast.LENGTH_LONG).show();
+
+                playsong(currnetposition);
+
+//                toggleButtonColor((ImageButton) v);
+
                 break;
             }
         }
@@ -184,7 +359,7 @@ public class Player extends AppCompatActivity {
     private boolean toggleButtonColor(ImageButton bt) {
         String selected = (String) bt.getTag(bt.getId());
         if (selected != null) { // selected
-            bt.setColorFilter(getResources().getColor(R.color.red_500), PorterDuff.Mode.SRC_ATOP);
+            bt.setColorFilter(getResources().getColor(R.color.grey_90), PorterDuff.Mode.SRC_ATOP);
             bt.setTag(bt.getId(), null);
             return false;
         } else {

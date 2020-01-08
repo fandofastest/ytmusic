@@ -8,10 +8,24 @@
     android:orientation="vertical">
 
 
+
     <SearchView
         android:id="@+id/searchview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search Here" />
+
+    <LinearLayout
+        android:id="@+id/layouprogress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView

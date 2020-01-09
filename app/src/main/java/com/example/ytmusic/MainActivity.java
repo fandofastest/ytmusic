@@ -1,12 +1,14 @@
 package com.example.ytmusic;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,17 +27,21 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.stepstone.apprating.AppRatingDialog;
+import com.stepstone.apprating.listener.RatingDialogListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
+import static com.example.ytmusic.Activity_Splash.keywords;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RatingDialogListener {
     public static  String DOWNLOAD_DIRECTORY = "/Downloads" ;
     String q;
 
@@ -60,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         searchView=findViewById(R.id.searchview);
 
         linearLayout=findViewById(R.id.layouprogress);
-        q="Via Vallen";
+        q=keywords;
 
         ctx=MainActivity.this;
 
@@ -76,57 +82,15 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 final SongModel songModel = listlagu.get(position);
+                String idv =songModel.getSongid();
 
+                if (Activity_Splash.statususer.equals("aman")){
+                    aman(position);
 
+                }else{
+                    tidakaman(idv);
 
-                final CharSequence[] items = {"Play", "Download"};
-                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//                builder.setTitle("Options");
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-
-                        if (items[item].equals("Download")) {
-
-                            long downloadFileRef = downloadFile(Uri.parse(serverurl+songModel.getSongid()), DOWNLOAD_DIRECTORY, songModel.getSongtitle()+".mp3");
-                            if (downloadFileRef != 0) {
-                                Toast.makeText(ctx,"Starting download",Toast.LENGTH_LONG).show();
-
-                            }else {
-                                Toast.makeText(ctx,"File is not available for download",Toast.LENGTH_LONG).show();
-
-                            }
-
-
-
-
-                            return;
-
-
-
-                        } else if (items[item].equals("Play")) {
-
-
-
-                            Intent intent = new Intent(MainActivity.this,Player.class);
-                            intent.putExtra("id",songModel.getSongid());
-                            intent.putExtra("title",songModel.getSongtitle());
-                            intent.putExtra("foto",songModel.getSongimage());
-                            intent.putExtra("duration",songModel.getSongdura());
-                            intent.putExtra("position",position);
-
-                            startActivity(intent);
-
-
-
-
-
-
-                        }
-
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
+                }
 
 
 
@@ -266,5 +230,140 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
+    private void tidakaman(String id){
+
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v="+id)));
+
+    }
+
+
+    private void aman(final int position){
+
+        final SongModel songModel = listlagu.get(position);
+
+
+
+        final CharSequence[] items = {"Play", "Download"};
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                builder.setTitle("Options");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (items[item].equals("Download")) {
+
+                    long downloadFileRef = downloadFile(Uri.parse(serverurl+songModel.getSongid()), DOWNLOAD_DIRECTORY, songModel.getSongtitle()+".mp3");
+                    if (downloadFileRef != 0) {
+                        Toast.makeText(ctx,"Starting download",Toast.LENGTH_LONG).show();
+
+                    }else {
+                        Toast.makeText(ctx,"File is not available for download",Toast.LENGTH_LONG).show();
+
+                    }
+
+
+
+
+                    return;
+
+
+
+                } else if (items[item].equals("Play")) {
+
+
+
+                    Intent intent = new Intent(MainActivity.this,Player.class);
+                    intent.putExtra("id",songModel.getSongid());
+                    intent.putExtra("title",songModel.getSongtitle());
+                    intent.putExtra("foto",songModel.getSongimage());
+                    intent.putExtra("duration",songModel.getSongdura());
+                    intent.putExtra("position",position);
+
+                    startActivity(intent);
+
+
+
+
+
+
+                }
+
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
+
+    @Override
+    public void onNegativeButtonClicked() {
+
+    }
+
+    @Override
+    public void onNeutralButtonClicked() {
+        finish();
+        finishAffinity();
+        System.exit(0);
+
+
+
+    }
+
+    @Override
+    public void onPositiveButtonClicked(int i, String s) {
+
+
+        Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        // To count with Play market backstack, After pressing back button,
+        // to taken back to our application, we need to add following flags to intent.
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName())));
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+
+
+            new AppRatingDialog.Builder()
+                    .setPositiveButtonText("Submit")
+                    .setNegativeButtonText("Cancel")
+                    .setNeutralButtonText("Exit")
+                    .setNoteDescriptions(Arrays.asList("Very Bad", "Not good", "Quite ok", "Very Good", "Excellent !!!"))
+                    .setDefaultRating(2)
+                    .setTitle("Rate this application")
+                    .setDescription("Please select some stars and give your feedback")
+                    .setCommentInputEnabled(true)
+                    .setDefaultComment("This app is pretty cool !")
+                    .setStarColor(R.color.orange_400)
+                    .setNoteDescriptionTextColor(R.color.blue_grey_300)
+                    .setTitleTextColor(R.color.colorPrimary)
+                    .setDescriptionTextColor(R.color.white)
+                    .setHint("Please write your comment here ...")
+                    .setHintTextColor(R.color.blue_grey_300)
+                    .setCommentTextColor(R.color.white)
+                    .setCommentBackgroundColor(R.color.colorPrimaryDark)
+                    .setCancelable(false)
+                    .setCanceledOnTouchOutside(false)
+                    .create(MainActivity.this)
+                    .show();
+
+
+
+        }
+
+
 
 }

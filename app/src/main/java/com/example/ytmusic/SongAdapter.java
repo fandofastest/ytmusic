@@ -45,7 +45,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
         ViewHolder(View v) {
             super(v);
             judul = v.findViewById(R.id.judul);
-            duration = v.findViewById(R.id.duration);
             imageView = v.findViewById(R.id.image);
 
             v.setOnClickListener(this);

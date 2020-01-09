@@ -228,13 +228,6 @@ public class Player extends AppCompatActivity {
 
 
 
-        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                // Changing button image to play button
-                bt_play.setImageResource(R.drawable.ic_play_circle_outline_black_24dp);
-            }
-        });
 
         try {
 
@@ -283,6 +276,21 @@ public class Player extends AppCompatActivity {
 
             }
         });
+
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                // Changing button image to play button
+                bt_play.setImageResource(R.drawable.ic_play_circle_outline_black_24dp);
+//                currnetposition=currnetposition+1;
+//
+////               Toast.makeText(getApplicationContext(),String.valueOf(currnetposition),Toast.LENGTH_LONG).show();
+//
+//                playsong(currnetposition);
+
+            }
+        });
+
 
 
 

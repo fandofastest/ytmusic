@@ -21,7 +21,12 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name=".Activity_Splash">
+        <activity android:name=".Activity_Splash"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Splash"
+            >
+
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,6 +40,11 @@
         </activity>
         <activity android:name=".Player" />
 
+
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
 
     </application>
 

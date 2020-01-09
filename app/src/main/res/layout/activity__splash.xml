@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    android:background="@color/white"
+    android:background="@drawable/splash"
     tools:context=".Activity_Splash">
 
 
@@ -17,19 +17,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/progressbar1"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="300dp"
         android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="300dp"
         android:visibility="gone"
         android:layout_centerHorizontal="true"
         android:id="@+id/startbut"
         android:background="@color/colorPrimary"
         android:textColor="@color/white"/>
+    <include
 
+        android:id="@+id/llProgressBar"
+        android:visibility="gone"
+        layout="@layout/layout_progressbar"/>
 
 </RelativeLayout>

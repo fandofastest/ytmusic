@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ytmusic">
+    package="com.reborn.music">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Grants the SDK permission to access a more accurate location based on GPS -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Grants the SDK permission to access approximate location based on cell tower -->
@@ -21,7 +21,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name=".Activity_Splash"
+        <activity android:name="com.reborn.music.Activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Splash"
@@ -35,10 +35,10 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name="com.reborn.music.Activity.MainActivity">
 
         </activity>
-        <activity android:name=".Player" />
+        <activity android:name="com.reborn.music.Activity.PlayerActivity" />
 
 
         <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->

@@ -1,4 +1,4 @@
-package com.example.ytmusic;
+package com.reborn.music.Adapter;
 
 
 import android.content.Context;
@@ -12,9 +12,9 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.reborn.music.Model.SongModel;
+import com.reborn.music.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{

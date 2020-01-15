@@ -1,9 +1,8 @@
-package com.example.ytmusic;
+package com.reborn.music.Activity;
 
 
 
 import android.annotation.SuppressLint;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -11,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,22 +18,22 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSeekBar;
-import androidx.appcompat.widget.Toolbar;
 
 
 import com.bumptech.glide.Glide;
+import com.reborn.music.R;
+import com.reborn.music.Model.SongModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import static com.example.ytmusic.MainActivity.listlagu;
-import static com.example.ytmusic.MainActivity.serverurl;
+import static com.reborn.music.Activity.MainActivity.listlagu;
+import static com.reborn.music.Activity.MainActivity.serverurl;
 
 
-public class Player extends AppCompatActivity {
+public class PlayerActivity extends AppCompatActivity {
 
     private View parent_view;
     private AppCompatSeekBar seek_song_progressbar;
@@ -43,7 +41,7 @@ public class Player extends AppCompatActivity {
     private TextView tv_song_current_duration, tv_song_total_duration,judul;
     private String title,id,imgurl,durasi;
     private ImageView imageView;
-    // Media Player
+    // Media PlayerActivity
     private MediaPlayer mp;
     private ProgressBar progressBar;
     private ImageButton next,prev,rand,repeat;
@@ -103,7 +101,7 @@ public class Player extends AppCompatActivity {
 
 
 
-        // Media Player
+        // Media PlayerActivity
         mp = new MediaPlayer();
 
 

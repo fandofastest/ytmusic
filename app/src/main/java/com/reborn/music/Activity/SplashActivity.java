@@ -1,4 +1,4 @@
-package com.example.ytmusic;
+package com.reborn.music.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,23 +19,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.reborn.music.R;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.InterstitialAd;
 import com.facebook.ads.InterstitialAdListener;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.ixidev.gdpr.GDPRChecker;
 import com.startapp.android.publish.adsCommon.StartAppAd;
-import com.startapp.android.publish.adsCommon.StartAppSDK;
 import com.startapp.android.publish.adsCommon.adListeners.AdDisplayListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static java.security.AccessController.getContext;
-
-public class Activity_Splash extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity {
 
     private static final String TAG ="mytags" ;
     Button startbutton;
@@ -69,7 +66,7 @@ public class Activity_Splash extends AppCompatActivity {
 //        startbutton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                Intent intent = new Intent(Activity_Splash.this,MainActivity.class);
+//                Intent intent = new Intent(SplashActivity.this,MainActivity.class);
 //                startActivity(intent);
 //            }
 //        });
@@ -166,7 +163,7 @@ public class Activity_Splash extends AppCompatActivity {
             }
         });
 
-        Volley.newRequestQueue(Activity_Splash.this).add(jsonObjectRequest);
+        Volley.newRequestQueue(SplashActivity.this).add(jsonObjectRequest);
 
 
 
@@ -200,7 +197,7 @@ public class Activity_Splash extends AppCompatActivity {
                     public void adHidden(com.startapp.android.publish.adsCommon.Ad ad) {
                         layutprogressbar.setVisibility(View.GONE);
 
-                        Intent intent = new Intent(Activity_Splash.this,MainActivity.class);
+                        Intent intent = new Intent(SplashActivity.this,MainActivity.class);
 
                         startActivity(intent);
 
@@ -215,7 +212,7 @@ public class Activity_Splash extends AppCompatActivity {
                     public void adClicked(com.startapp.android.publish.adsCommon.Ad ad) {
                         layutprogressbar.setVisibility(View.GONE);
 
-                        Intent intent = new Intent(Activity_Splash.this,MainActivity.class);
+                        Intent intent = new Intent(SplashActivity.this,MainActivity.class);
 
                         startActivity(intent);
 
@@ -226,7 +223,7 @@ public class Activity_Splash extends AppCompatActivity {
 
                         layutprogressbar.setVisibility(View.GONE);
 
-                        Intent intent = new Intent(Activity_Splash.this,MainActivity.class);
+                        Intent intent = new Intent(SplashActivity.this,MainActivity.class);
 
                         startActivity(intent);
 
@@ -279,7 +276,7 @@ public class Activity_Splash extends AppCompatActivity {
             public void onAdClosed() {
                 layutprogressbar.setVisibility(View.GONE);
 
-                Intent intent = new Intent(Activity_Splash.this,MainActivity.class);
+                Intent intent = new Intent(SplashActivity.this,MainActivity.class);
 
                 startActivity(intent);
 
@@ -309,7 +306,7 @@ public class Activity_Splash extends AppCompatActivity {
                 // Interstitial dismissed callback
                 Log.e(TAG, "Interstitial ad dismissed.");
 
-                Intent intent = new Intent(Activity_Splash.this,MainActivity.class);
+                Intent intent = new Intent(SplashActivity.this,MainActivity.class);
                 startActivity(intent);
             }
 

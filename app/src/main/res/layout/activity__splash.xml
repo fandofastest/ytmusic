@@ -8,7 +8,7 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:background="@drawable/splash"
-    tools:context=".Activity_Splash">
+    tools:context=".Activity.SplashActivity">
 
 
 

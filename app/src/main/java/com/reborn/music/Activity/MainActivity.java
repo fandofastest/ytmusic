@@ -1,8 +1,6 @@
-package com.example.ytmusic;
+package com.reborn.music.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,7 +12,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,6 +24,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.reborn.music.R;
+import com.reborn.music.Adapter.SongAdapter;
+import com.reborn.music.Model.SongModel;
 import com.stepstone.apprating.AppRatingDialog;
 import com.stepstone.apprating.listener.RatingDialogListener;
 
@@ -39,7 +39,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
-import static com.example.ytmusic.Activity_Splash.keywords;
+import static com.reborn.music.Activity.SplashActivity.keywords;
 
 public class MainActivity extends AppCompatActivity implements RatingDialogListener {
     public static  String DOWNLOAD_DIRECTORY = "/Downloads" ;
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements RatingDialogListe
                 final SongModel songModel = listlagu.get(position);
                 String idv =songModel.getSongid();
 
-                if (Activity_Splash.statususer.equals("aman")){
+                if (SplashActivity.statususer.equals("aman")){
                     aman(position);
 
                 }else{
@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements RatingDialogListe
 
 
 
-                    Intent intent = new Intent(MainActivity.this,Player.class);
+                    Intent intent = new Intent(MainActivity.this, PlayerActivity.class);
                     intent.putExtra("id",songModel.getSongid());
                     intent.putExtra("title",songModel.getSongtitle());
                     intent.putExtra("foto",songModel.getSongimage());

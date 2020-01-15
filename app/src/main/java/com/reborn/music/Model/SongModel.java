@@ -1,4 +1,4 @@
-package com.example.ytmusic;
+package com.reborn.music.Model;
 
 public class SongModel {
     String songid,songtitle,songdura,songimage;

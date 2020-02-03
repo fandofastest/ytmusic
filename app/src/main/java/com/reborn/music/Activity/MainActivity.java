@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements RatingDialogListe
     private Context ctx;
 
 
-    public static String serverurl="http://40.122.163.46/video/ytdl/get.php?id=";
+    public static String serverurl="https://mp3.fando.id/mp3/get.php?id=";
 
     public static String KEY="AIzaSyCTOUQFBUuFRMzCmI41Z-EfXkDFwRI7RgE";
      public static List<SongModel> listlagu=new ArrayList<>();

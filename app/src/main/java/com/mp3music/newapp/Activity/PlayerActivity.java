@@ -1,4 +1,4 @@
-package com.reborn.music.Activity;
+package com.mp3music.newapp.Activity;
 
 
 
@@ -24,13 +24,13 @@ import androidx.appcompat.widget.AppCompatSeekBar;
 
 
 import com.bumptech.glide.Glide;
-import com.reborn.music.R;
-import com.reborn.music.Model.SongModel;
+import com.mp3music.newapp.R;
+import com.mp3music.newapp.Model.SongModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import static com.reborn.music.Activity.MainActivity.listlagu;
-import static com.reborn.music.Activity.MainActivity.serverurl;
+import static com.mp3music.newapp.Activity.MainActivity.listlagu;
+import static com.mp3music.newapp.Activity.MainActivity.serverurl;
 
 
 public class PlayerActivity extends AppCompatActivity {

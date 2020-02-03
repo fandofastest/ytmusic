@@ -1,4 +1,4 @@
-package com.reborn.music.Adapter;
+package com.mp3music.newapp.Adapter;
 
 
 import android.content.Context;
@@ -12,8 +12,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.reborn.music.Model.SongModel;
-import com.reborn.music.R;
+import com.mp3music.newapp.Model.SongModel;
+import com.mp3music.newapp.R;
 
 import java.util.List;
 

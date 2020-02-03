@@ -1,4 +1,4 @@
-package com.reborn.music.Model;
+package com.mp3music.newapp.Model;
 
 public class SongModel {
     String songid,songtitle,songdura,songimage;

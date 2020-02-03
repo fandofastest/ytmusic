@@ -1,4 +1,4 @@
-package com.reborn.music.Activity;
+package com.mp3music.newapp.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,9 +24,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.reborn.music.R;
-import com.reborn.music.Adapter.SongAdapter;
-import com.reborn.music.Model.SongModel;
+import com.mp3music.newapp.R;
+import com.mp3music.newapp.Adapter.SongAdapter;
+import com.mp3music.newapp.Model.SongModel;
 import com.stepstone.apprating.AppRatingDialog;
 import com.stepstone.apprating.listener.RatingDialogListener;
 
@@ -39,7 +39,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
-import static com.reborn.music.Activity.SplashActivity.keywords;
+import static com.mp3music.newapp.Activity.SplashActivity.keywords;
 
 public class MainActivity extends AppCompatActivity implements RatingDialogListener {
     public static  String DOWNLOAD_DIRECTORY = "/Downloads" ;
